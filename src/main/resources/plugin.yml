@@ -1,0 +1,7 @@
+main: ${PACKAGE}.${NAME}
+name: ${NAME}
+version: "${VERSION}"
+api-version: "1.21.1"
+commands:
+  reset:
+    description: Setzt die Einrichtung zurück
