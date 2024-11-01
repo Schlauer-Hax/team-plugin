@@ -1,17 +1,17 @@
 package com.systel.serverplugin.commands;
 
-import com.systel.serverplugin.SchoolManager;
+import com.systel.serverplugin.TeamManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ResetCommand implements CommandExecutor {
-    private final SchoolManager schoolManager;
+public class TeamCommand implements CommandExecutor {
+    private final TeamManager teamManager;
 
-    public ResetCommand(SchoolManager schoolManager) {
-        this.schoolManager = schoolManager;
+    public TeamCommand(TeamManager teamManager) {
+        this.teamManager = teamManager;
     }
 
     @Override
@@ -20,11 +20,8 @@ public class ResetCommand implements CommandExecutor {
             return false;
         }
 
-        player.setPlayerListName(player.getName());
-        schoolManager.resetPlayerSchool(player);
-        player.openInventory(schoolManager.createSchoolSelector());
-        schoolManager.sendMsg(player, "Dein Name wurde zurückgesetzt!");
-
+        teamManager.removePlayerFromTeam(player);
+        player.openInventory(teamManager.createTeamSelector());
         return true;
     }
 }
