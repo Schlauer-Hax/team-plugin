@@ -67,7 +67,7 @@ public class TeamManager {
 
         int slot = 0;
         for (Team team : filteredTeams(scoreboard.getTeams())) {
-            ItemStack item = new ItemStack(colorMap.get(team.color().toString()));
+            ItemStack item = new ItemStack(colorMap.get(team.displayName().children().get(0).color().toString()));
             ItemMeta meta = item.getItemMeta();
             meta.displayName(Component.text(team.getName().replace("team-", "").toUpperCase()));
             item.setItemMeta(meta);
