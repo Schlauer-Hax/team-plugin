@@ -1,6 +1,6 @@
-package com.systel.serverplugin.commands;
+package me.haxis.teamplugin.commands;
 
-import com.systel.serverplugin.TeamManager;
+import me.haxis.teamplugin.TeamManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

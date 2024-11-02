@@ -1,5 +1,5 @@
-main: ${PACKAGE}.${NAME}
-name: ${NAME}
+main: me.haxis.teamplugin.TeamPlugin
+name: TeamPlugin
 version: "${VERSION}"
 api-version: "1.21.1"
 commands:

@@ -1,7 +1,7 @@
-package com.systel.serverplugin.events;
+package me.haxis.teamplugin.events;
 
-import com.systel.serverplugin.TeamManager;
-import com.systel.serverplugin.TeamPlugin;
+import me.haxis.teamplugin.TeamManager;
+import me.haxis.teamplugin.TeamPlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,13 +29,10 @@ public class TeamEventHandler implements Listener {
                 player.openInventory(teamManager.createTeamSelector());
             }, 20L);
         }
-
-        // TODO: Fix Team if config change
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // TODO: Check check
         if (!event.getView().getTitle().equals("Select your Team")) return;
 
         event.setCancelled(true);
@@ -46,7 +43,6 @@ public class TeamEventHandler implements Listener {
         String teamName = event.getCurrentItem().getItemMeta().getDisplayName();
         teamManager.removePlayerFromTeam(player);
         teamManager.addPlayerToTeam(teamName.toLowerCase(), player);
-        teamManager.saveData();
         player.closeInventory();
         player.sendMessage(Component.text("Successfully joined Team "+ teamName + "!"));
     }

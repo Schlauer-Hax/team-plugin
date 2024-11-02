@@ -1,9 +1,8 @@
-package com.systel.serverplugin;
+package me.haxis.teamplugin;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -13,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import static java.util.Map.entry;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,34 +27,12 @@ public class TeamManager {
         this.config = plugin.getConfig();
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         this.scoreboard = manager.getMainScoreboard();
-        plugin.saveDefaultConfig();
-    }
-
-    public void loadData() {
-        if (config.contains("players")) {
-            for (String uuidStr : Objects.requireNonNull(config.getConfigurationSection("players")).getKeys(false)) {
-                String teamName = config.getString("players." + uuidStr);
-                OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuidStr));
-                assert teamName != null;
-                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team-"+teamName).addPlayer(player);
-            }
-        }
-    }
-
-    public void saveData() {
-        for (Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
-            team.getEntries().forEach(entry -> {
-                config.set("players." + Bukkit.getOfflinePlayer(entry).getUniqueId(), team.getName());
-            });
-        }
-        plugin.saveConfig();
     }
 
     public void removePlayerFromTeam(Player player) {
         filteredTeams(scoreboard.getTeams()).forEach(team -> {
             team.removePlayer(player);
         });
-        saveData();
     }
 
     public void addPlayerToTeam(String teamName, Player player) {
@@ -65,12 +43,31 @@ public class TeamManager {
         });
     }
 
+    public static Map<String, Material> colorMap = Map.ofEntries(
+            entry("aqua", Material.LIGHT_BLUE_STAINED_GLASS_PANE),
+            entry("black", Material.BLACK_STAINED_GLASS_PANE),
+            entry("blue", Material.BLUE_STAINED_GLASS_PANE),
+            entry("dark_aqua", Material.CYAN_STAINED_GLASS_PANE),
+            entry("dark_blue", Material.BLUE_STAINED_GLASS_PANE),
+            entry("dark_gray", Material.GRAY_STAINED_GLASS_PANE),
+            entry("dark_green", Material.GREEN_STAINED_GLASS_PANE),
+            entry("dark_purple", Material.PURPLE_STAINED_GLASS_PANE),
+            entry("dark_red", Material.RED_STAINED_GLASS_PANE),
+            entry("gold", Material.ORANGE_STAINED_GLASS_PANE),
+            entry("gray", Material.LIGHT_GRAY_STAINED_GLASS_PANE),
+            entry("green", Material.LIME_STAINED_GLASS_PANE),
+            entry("light_purple", Material.PINK_STAINED_GLASS_PANE),
+            entry("red", Material.RED_STAINED_GLASS_PANE),
+            entry("white", Material.WHITE_STAINED_GLASS_PANE),
+            entry("yellow", Material.YELLOW_STAINED_GLASS_PANE)
+    );
+
     public Inventory createTeamSelector() {
         Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Select your Team"));
 
         int slot = 0;
         for (Team team : filteredTeams(scoreboard.getTeams())) {
-            ItemStack item = new ItemStack(Material.GLASS_PANE);
+            ItemStack item = new ItemStack(colorMap.get(team.color().toString()));
             ItemMeta meta = item.getItemMeta();
             meta.displayName(Component.text(team.getName().replace("team-", "").toUpperCase()));
             item.setItemMeta(meta);
