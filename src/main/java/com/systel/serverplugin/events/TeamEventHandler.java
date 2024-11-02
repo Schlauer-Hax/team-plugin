@@ -36,7 +36,7 @@ public class TeamEventHandler implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         // TODO: Check check
-        if (!event.getView().title().equals(Component.text("Select your Team"))) return;
+        if (!event.getView().getTitle().equals("Select your Team")) return;
 
         event.setCancelled(true);
 
@@ -44,6 +44,10 @@ public class TeamEventHandler implements Listener {
 
         Player player = (Player) event.getWhoClicked();
         String teamName = event.getCurrentItem().getItemMeta().getDisplayName();
-        teamManager.addPlayerToTeam(teamName, player);
+        teamManager.removePlayerFromTeam(player);
+        teamManager.addPlayerToTeam(teamName.toLowerCase(), player);
+        teamManager.saveData();
+        player.closeInventory();
+        player.sendMessage(Component.text("Successfully joined Team "+ teamName + "!"));
     }
 }

@@ -44,7 +44,7 @@ public class TeamManager {
     public void saveData() {
         for (Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
             team.getEntries().forEach(entry -> {
-                config.set("players." + entry, team.getName());
+                config.set("players." + Bukkit.getOfflinePlayer(entry).getUniqueId(), team.getName());
             });
         }
         plugin.saveConfig();
@@ -72,7 +72,7 @@ public class TeamManager {
         for (Team team : filteredTeams(scoreboard.getTeams())) {
             ItemStack item = new ItemStack(Material.GLASS_PANE);
             ItemMeta meta = item.getItemMeta();
-            meta.displayName(Component.text(team.getName()));
+            meta.displayName(Component.text(team.getName().replace("team-", "").toUpperCase()));
             item.setItemMeta(meta);
             inv.setItem(slot++, item);
         }

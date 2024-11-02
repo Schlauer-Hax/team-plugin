@@ -20,7 +20,6 @@ public class TeamCommand implements CommandExecutor {
             return false;
         }
 
-        teamManager.removePlayerFromTeam(player);
         player.openInventory(teamManager.createTeamSelector());
         return true;
     }
