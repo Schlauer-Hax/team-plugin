@@ -25,9 +25,7 @@ public class TeamEventHandler implements Listener {
 
         if (!teamManager.hasSelectedTeam(player)) {
             // Open school selector for new players after a short delay
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                player.openInventory(teamManager.createTeamSelector());
-            }, 20L);
+            player.sendMessage(Component.text("Hey! You have not selected a team yet! You can select a team using /selectteam"));
         }
     }
 
@@ -42,7 +40,7 @@ public class TeamEventHandler implements Listener {
         Player player = (Player) event.getWhoClicked();
         String teamName = event.getCurrentItem().getItemMeta().getDisplayName();
         teamManager.removePlayerFromTeam(player);
-        teamManager.addPlayerToTeam(teamName.toLowerCase(), player);
+        teamManager.addPlayerToTeam(teamName, player);
         player.closeInventory();
         player.sendMessage(Component.text("Successfully joined Team "+ teamName + "!"));
     }

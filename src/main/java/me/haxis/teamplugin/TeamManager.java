@@ -37,7 +37,7 @@ public class TeamManager {
 
     public void addPlayerToTeam(String teamName, Player player) {
         filteredTeams(scoreboard.getTeams()).forEach(team -> {
-            if (team.getName().equals("team-"+teamName)) {
+            if (team.getName().equalsIgnoreCase("team-"+teamName)) {
                 team.addPlayer(player);
             }
         });
